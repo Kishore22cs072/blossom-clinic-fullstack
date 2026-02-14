@@ -23,19 +23,46 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     document.querySelector(this.getAttribute('href')).scrollIntoView({
       behavior: 'smooth'
     });
-    // Close mobile menu if open
     navLinks.classList.remove('active');
   });
 });
 
-// Optional: Form submission alert (replace with real backend later)
-document.getElementById('appointment-form')?.addEventListener('submit', e => {
-  e.preventDefault();
-  alert('Thank you! Your appointment request has been sent. We will contact you soon.');
-  e.target.reset();
-});
-
+// ✅ Backend API URL
 const API_URI = "https://blossom-clinic-fullstack.onrender.com";
 
+// ✅ Replace old alert form with real backend call
+document.getElementById('appointment-form')?.addEventListener('submit', async (e) => {
+  e.preventDefault();
 
-// You can later add dynamic blog loading from backend like in previous example
+  const formData = {
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
+    date: document.getElementById('date').value,
+    message: document.getElementById('message').value
+  };
+
+  try {
+    const response = await fetch(`${API_URI}/api/contact`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(formData)
+    });
+
+    const result = await response.json();
+
+    if (result.success) {
+      alert(result.message);
+      e.target.reset();
+    } else {
+      alert(result.message);
+    }
+
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error. Please try again.");
+  }
+});
+

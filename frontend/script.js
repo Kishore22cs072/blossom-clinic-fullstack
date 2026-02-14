@@ -35,4 +35,7 @@ document.getElementById('appointment-form')?.addEventListener('submit', e => {
   e.target.reset();
 });
 
+const API_URI = "https://blossom-clinic-fullstack.onrender.com";
+
+
 // You can later add dynamic blog loading from backend like in previous example
